@@ -89,6 +89,17 @@ const server = http.createServer((req, res) => {
     // Phase 1: GET /dogs
     if (req.method === 'GET' && req.url === '/dogs') {
       // Your code here
+      const htmlTemplate = fs.readFileSync('./views/dogs.html', 'utf-8');
+
+      const htmlPage = htmlTemplate
+        .replace(/#{dogsList}/g, dogs.map(el => {
+          return `<li>${el.name}</li>`;
+        }).join(''));
+
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/html');
+
+      return res.end(htmlPage);
     }
 
     // Phase 2: GET /dogs/new
